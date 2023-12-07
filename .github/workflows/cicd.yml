@@ -1,4 +1,4 @@
-name: FGF CI
+name: "FGF CI"
 
 on:
   push:
