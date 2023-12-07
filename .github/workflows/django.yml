@@ -21,6 +21,14 @@ jobs:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_DB: hpakgtpckkpehoiwwmvltzey
+          POSTGRES_USER: mkvaoehdhlmpmksc
+          POSTGRES_PASSWORD: r5!hvfy7o7vctchl+nawrc
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
