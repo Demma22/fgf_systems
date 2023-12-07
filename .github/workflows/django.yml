@@ -15,22 +15,12 @@ jobs:
     strategy:
       matrix:
         python-version:
+          - '3.9'
           - '3.10'
 
     env:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-
-    services:
-      postgres:
-        image: postgres:13
-        env:
-          POSTGRES_DB: mydatabase
-          POSTGRES_USER: mydatabaseuser
-          POSTGRES_PASSWORD: mydatabasepassword
-        ports:
-          - 5432:5432
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Checkout code
