@@ -30,6 +30,12 @@ jobs:
       - name: Set DATABASE_URL for Django Tests
         run: echo "DATABASE_URL=${DATABASE_URL}" >> $GITHUB_ENV
 
+      - name: Grant Database Permissions
+        run: |
+          # Assuming your DATABASE_URL is of the form: postgresql://username:password@host:port/database
+          DB_USER=$(echo $DATABASE_URL | sed -n 's/.*\/\/\([^:]*\):.*/\1/p')
+          psql -U $DB_USER -c "ALTER USER $DB_USER CREATEDB;"
+
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
