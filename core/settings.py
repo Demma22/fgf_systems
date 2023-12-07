@@ -1,5 +1,4 @@
 import os
-from urllib.parse import quote
 from pathlib import Path
 import dj_database_url
 from decouple import config
@@ -98,8 +97,5 @@ SWAGGER_SETTINGS = {
 
 DATABASES = {
     "default": dj_database_url.config(default=config("DATABASE_URL")),
-    "test": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": ":memory:",
-    },
+
 }
