@@ -3,12 +3,10 @@ from urllib.parse import quote
 from pathlib import Path
 import dj_database_url
 from decouple import config
-import dotenv
 import environ
 
 env = environ.Env()
 environ.Env.read_env()
-dotenv.load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
@@ -83,8 +81,8 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = "static/"
-MEDIA_URL = "images/"
+STATIC_URL = "/static/"
+MEDIA_URL = "/images/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -99,11 +97,7 @@ SWAGGER_SETTINGS = {
 }
 
 DATABASES = {
-    "default": dj_database_url.config(
-        default=config("DATABASE_URL").format(
-            encoded_password=quote("befpc4iJOVEpaRNf_r9TpkkrZ##_8ep1")
-        )
-    ),
+    "default": dj_database_url.config(default=config("DATABASE_URL")),
     "test": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": ":memory:",
