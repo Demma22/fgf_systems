@@ -63,7 +63,10 @@ jobs:
           # Add more debugging commands as needed
 
       - name: Run Migrations
-        run: python manage.py migrate
+        run: |
+          echo "Before Migrations"
+          python manage.py migrate
+          echo "After Migrations"
 
       - name: Collect Static Files
         run: python manage.py collectstatic --noinput
