@@ -15,7 +15,6 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - '3.9'
           - '3.10'
 
     env:
@@ -61,6 +60,11 @@ jobs:
         run: |
           echo "DATABASE_URL: $DATABASE_URL"
           # Add more debugging commands as needed
+
+      - name: Set up environment variables
+        run: |
+          echo "DJANGO_SECRET_KEY=$DJANGO_SECRET_KEY" >> $GITHUB_ENV
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
 
       - name: Run Migrations
         run: |
