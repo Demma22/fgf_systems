@@ -103,5 +103,9 @@ DATABASES = {
         default=config("DATABASE_URL").format(
             encoded_password=quote("befpc4iJOVEpaRNf_r9TpkkrZ##_8ep1")
         )
-    )
+    ),
+    "test": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    },
 }
