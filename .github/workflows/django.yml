@@ -14,6 +14,9 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
+      - name: List Files
+        run: ls -R
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -22,7 +25,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r C:\Users\NEKIWANUKA\Desktop\fgf_systems\requirements.txt
+          pip install -r requirements.txt
 
       - name: Run Tests
         run: python manage.py test
