@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from accounts.models import User
+from django.forms import ValidationError
 
 
 class Clan(models.Model):
@@ -36,7 +37,7 @@ class Ethnicity(models.Model):
     food = models.CharField(max_length=250, null=True, blank=True)
     staple_food = models.CharField(max_length=250, null=True, blank=True)
     cuisine = models.CharField(max_length=250, null=True, blank=True)
-    cashcrop = models.CharField(max_length=250, null=True, blank=True)
+    cash_crop = models.CharField(max_length=250, null=True, blank=True)
     universal_worship = models.CharField(max_length=250, null=True, blank=True)
     denominations = models.CharField(max_length=250, null=True, blank=True)
     universal_rituals = models.CharField(max_length=250, null=True, blank=True)
@@ -51,7 +52,7 @@ class Ethnicity(models.Model):
 class EthnicGroup(models.Model):
     ethnic_group_name = models.CharField(max_length=250, null=True, blank=True)
     region_in_Uganda = models.CharField(max_length=250, null=True, blank=True)
-    number_of_ethnicities = models.IntegerField(default=1, null=True, blank=True)
+    number_of_ethnicity = models.IntegerField(default=1, null=True, blank=True)
     number_of_languages = models.IntegerField(default=1, null=True)
     number_of_kingdoms = models.IntegerField(default=1, null=True)
     ethnicity_name = models.ForeignKey(Ethnicity, on_delete=models.SET_NULL, null=True)

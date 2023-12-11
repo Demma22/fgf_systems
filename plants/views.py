@@ -9,7 +9,7 @@ from .serializers import (
 )
 
 
-class CountEntriesAPIView(generics.GenericAPIView):
+class CountPlantEntriesAPIView(generics.GenericAPIView):
     """
     View to count all plant and medicinal plant entries.
     """
@@ -26,6 +26,21 @@ class CountEntriesAPIView(generics.GenericAPIView):
         )
 
 
+class CountMedicinalPlantEntriesAPIView(generics.GenericAPIView):
+    """
+    View to count all medicinal plant entries.
+    """
+
+    def get(self, request, *args, **kwargs):
+        medicinal_plant_count = MedicinalPlant.objects.count()
+
+        return Response(
+            {
+                "medicinal_plant_entries_count": medicinal_plant_count,
+            }
+        )
+
+
 class PlantViewSet(viewsets.ModelViewSet):
     queryset = Plant.objects.all()
     serializer_class = PlantSerializer
@@ -33,13 +48,28 @@ class PlantViewSet(viewsets.ModelViewSet):
     search_fields = ["botanical_name", "region_in_Uganda"]
     ordering_fields = "__all__"
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         count = queryset.count()
         serializer = self.get_serializer(queryset, many=True)
         return Response({"count": count, "plants": serializer.data})
+
+    def review_edit_data(self, request, pk=None):
+        plant_instance = self.get_object()
+        serializer = PlantSerializer(plant_instance)
+        return Response(serializer.data)
+
+    def approve_data(self, request, pk=None):
+        plant_instance = self.get_object()
+        plant_instance.is_approved = True  # Assuming you have an 'is_approved' field
+        plant_instance.save()
+        return Response({"message": "Plant data approved successfully."})
+
+    def reject_data(self, request, pk=None):
+        plant_instance = self.get_object()
+        plant_instance.delete()
+        return Response({"message": "Plant data rejected successfully."})
 
 
 class PlantNameViewSet(viewsets.ModelViewSet):
@@ -64,6 +94,24 @@ class MedicinalPlantViewSet(viewsets.ModelViewSet):
         count = queryset.count()
         serializer = self.get_serializer(queryset, many=True)
         return Response({"count": count, "medicinal_plants": serializer.data})
+
+    def review_edit_data(self, request, pk=None):
+        medicinal_plant_instance = self.get_object()
+        serializer = MedicinalPlantSerializer(medicinal_plant_instance)
+        return Response(serializer.data)
+
+    def approve_data(self, request, pk=None):
+        medicinal_plant_instance = self.get_object()
+        medicinal_plant_instance.is_approved = (
+            True  # Assuming you have an 'is_approved' field
+        )
+        medicinal_plant_instance.save()
+        return Response({"message": "Medicinal plant data approved successfully."})
+
+    def reject_data(self, request, pk=None):
+        medicinal_plant_instance = self.get_object()
+        medicinal_plant_instance.delete()
+        return Response({"message": "Medicinal plant data rejected successfully."})
 
 
 class MedicinalPlantNameViewSet(viewsets.ModelViewSet):

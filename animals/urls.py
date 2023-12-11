@@ -1,6 +1,8 @@
 from django.urls import path
 from .views import (
-    CountEntriesAPIView,
+    TotalAnimalCountAPIView,
+    TotalClassificationCountAPIView,
+    TotalSpeciesCountAPIView,
     AnimalListCreateView,
     AnimalDetailView,
     AnimalClassificationListCreateView,
@@ -8,35 +10,63 @@ from .views import (
     AnimalLocalNameListCreateView,
     AnimalLocalNameDetailView,
     submit_animal_data,
+    review_edit_animal_data,
     approve_animal_data,
     reject_animal_data,
 )
 
 urlpatterns = [
-    path("api/count-animal-entries/", CountEntriesAPIView.as_view(), name="count-animal-entries"),
+    path(
+        "api/total-animal-count/",
+        TotalAnimalCountAPIView.as_view(),
+        name="total-animal-count",
+    ),
+    path(
+        "api/total-classification-count/",
+        TotalClassificationCountAPIView.as_view(),
+        name="total-classification-count",
+    ),
+    path(
+        "api/total-species-count/",
+        TotalSpeciesCountAPIView.as_view(),
+        name="total-species-count",
+    ),
     path("api/animals/", AnimalListCreateView.as_view(), name="animal-list-create"),
     path("api/animals/<int:pk>/", AnimalDetailView.as_view(), name="animal-detail"),
     path(
-        "api/animal-classifications/",
+        "api/classifications/",
         AnimalClassificationListCreateView.as_view(),
-        name="animal-classification-list-create",
+        name="classification-list-create",
     ),
     path(
-        "api/animal-classifications/<int:pk>/",
+        "api/classifications/<int:pk>/",
         AnimalClassificationDetailView.as_view(),
-        name="animal-classification-detail",
+        name="classification-detail",
     ),
     path(
-        "api/animal-local-names/",
+        "api/local-names/",
         AnimalLocalNameListCreateView.as_view(),
-        name="animal-local-name-list-create",
+        name="local-name-list-create",
     ),
     path(
-        "api/animal-local-names/<int:pk>/",
+        "api/local-names/<int:pk>/",
         AnimalLocalNameDetailView.as_view(),
-        name="animal-local-name-detail",
+        name="local-name-detail",
     ),
-    path("api/submit-animal/", submit_animal_data, name="submit_animal_data"),
-    path("api/approve-animal/<int:animal_id>/", approve_animal_data, name="approve_animal_data"),
-    path("api/reject-animal/<int:animal_id>/", reject_animal_data, name="reject_animal_data"),
+    path("api/submit-animal-data/", submit_animal_data, name="submit-animal-data"),
+    path(
+        "api/review-edit-animal-data/<int:animal_id>/",
+        review_edit_animal_data,
+        name="review-edit-animal-data",
+    ),
+    path(
+        "api/approve-animal-data/<int:animal_id>/",
+        approve_animal_data,
+        name="approve-animal-data",
+    ),
+    path(
+        "api/reject-animal-data/<int:animal_id>/",
+        reject_animal_data,
+        name="reject-animal-data",
+    ),
 ]

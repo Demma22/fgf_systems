@@ -6,7 +6,8 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 
-admin.site.site_header = "FGF SYTEMS"
+
+admin.site.site_header = "FGF SYSTEMS"
 admin.site.site_title = "Welcome to FGF systems "
 admin.site.index_title = "Admin Dashboard"
 
@@ -37,4 +38,5 @@ urlpatterns = [
     path("", include("animals.urls"), name="animals"),
     path("", include("cultures.urls"), name="cultures"),
     path("", include("plants.urls"), name="plants"),
+    path("", include("accounts.urls"), name="accounts"),
 ]

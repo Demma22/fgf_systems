@@ -1,12 +1,13 @@
-# views.py
+from .serializers import CountEntriesSerializer
+from django.db.models import Count
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Count
+
 from rest_framework.decorators import api_view, permission_classes
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from accounts.models import User
 from .models import Animal, AnimalClassification, AnimalLocalName
 from .serializers import (
     AnimalSerializer,
@@ -16,29 +17,38 @@ from .serializers import (
 )
 
 
-class CountEntriesAPIView(generics.ListAPIView):
+class TotalAnimalCountAPIView(generics.RetrieveAPIView):
     serializer_class = CountEntriesSerializer
-    permission_classes = [permissions.AllowAny]  # Allow any user to view the counts
+    permission_classes = [permissions.AllowAny]
 
-    def get_queryset(self):
-        # Count the total number of entries for animals
-        total_animal_count = Animal.objects.count()
+    def get_object(self):
+        return {
+            "total_animal_count": Animal.objects.count(),
+        }
 
-        # Count the total number of entries for animal classifications
-        total_classification_count = AnimalClassification.objects.count()
 
-        # Count the total number of animal species
+class TotalClassificationCountAPIView(generics.RetrieveAPIView):
+    serializer_class = CountEntriesSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_object(self):
+        return {
+            "total_classification_count": AnimalClassification.objects.count(),
+        }
+
+
+class TotalSpeciesCountAPIView(generics.RetrieveAPIView):
+    serializer_class = CountEntriesSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_object(self):
         total_species_count = AnimalClassification.objects.aggregate(
             total_species_count=Count("species", distinct=True)
         )["total_species_count"]
 
-        return [
-            {
-                "total_animal_count": total_animal_count,
-                "total_classification_count": total_classification_count,
-                "total_species_count": total_species_count,
-            }
-        ]
+        return {
+            "total_species_count": total_species_count,
+        }
 
 
 class AnimalListCreateView(generics.ListCreateAPIView):
@@ -93,6 +103,23 @@ def submit_animal_data(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "PATCH"])
+@permission_classes([permissions.IsAdminUser])
+def review_edit_animal_data(request, animal_id):
+    animal = get_object_or_404(Animal, pk=animal_id)
+
+    if request.method == "GET":
+        serializer = AnimalSerializer(animal)
+        return Response(serializer.data)
+
+    elif request.method == "PATCH":
+        serializer = AnimalSerializer(animal, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["PATCH"])

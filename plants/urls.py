@@ -1,19 +1,24 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 from .views import (
-    CountEntriesAPIView,
+    CountMedicinalPlantEntriesAPIView,
+    CountPlantEntriesAPIView,
     PlantViewSet,
     PlantNameViewSet,
     MedicinalPlantViewSet,
     MedicinalPlantNameViewSet,
 )
 
-
 urlpatterns = [
     path(
-        "api/count-plant-entries/", CountEntriesAPIView.as_view(), name="count_entries"
+        "api/total-plant-entries/",
+        CountPlantEntriesAPIView.as_view(),
+        name="total-plant-count",
     ),
-    # Use the .as_view() method with the specific actions for each ViewSet
+    path(
+        "api/total-medicinal-plant-entries/",
+        CountMedicinalPlantEntriesAPIView.as_view(),
+        name="total-medicinal-plant-entries",
+    ),
     path(
         "api/plants/",
         PlantViewSet.as_view({"get": "list", "post": "create"}),
@@ -82,7 +87,35 @@ urlpatterns = [
         ),
         name="medicinal_plant_name_detail",
     ),
-
+    # Additional paths for review, approve, and reject actions
+    path(
+        "api/plants/<int:pk>/review-edit/",
+        PlantViewSet.as_view({"patch": "review_edit_data"}),
+        name="plant-review-edit",
+    ),
+    path(
+        "api/plants/<int:pk>/approve/",
+        PlantViewSet.as_view({"patch": "approve_data"}),
+        name="plant-approve",
+    ),
+    path(
+        "api/plants/<int:pk>/reject/",
+        PlantViewSet.as_view({"delete": "reject_data"}),
+        name="plant-reject",
+    ),
+    path(
+        "api/medicinalplants/<int:pk>/review-edit/",
+        MedicinalPlantViewSet.as_view({"patch": "review_edit_data"}),
+        name="medicinal-plant-review-edit",
+    ),
+    path(
+        "api/medicinalplants/<int:pk>/approve/",
+        MedicinalPlantViewSet.as_view({"patch": "approve_data"}),
+        name="medicinal-plant-approve",
+    ),
+    path(
+        "api/medicinalplants/<int:pk>/reject/",
+        MedicinalPlantViewSet.as_view({"delete": "reject_data"}),
+        name="medicinal-plant-reject",
+    ),
 ]
-
-
