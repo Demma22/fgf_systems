@@ -2,9 +2,11 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build_and_test:
@@ -38,5 +40,14 @@ jobs:
       - name: Set DATABASE_URL for Deployment
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
 
-      - name: Echo Hello World
-        run: echo "Hello World"
+      - name: Deploy to Production
+        run: |
+          # Add your deployment script or commands here
+          # Example: You might want to run migrations and collect static files
+          python manage.py migrate
+          python manage.py collectstatic --noinput
+
+      - name: Echo Deployment Status
+        run: echo "Deployment to Production Completed"
+
+# Add any additional steps or jobs as needed
