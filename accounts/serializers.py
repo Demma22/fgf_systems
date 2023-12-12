@@ -1,5 +1,6 @@
 # serializers.py
 from base64 import urlsafe_b64encode
+from lib2to3.pgen2.tokenize import TokenError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from rest_framework import serializers
@@ -11,6 +12,30 @@ from django.urls import reverse
 from .utils import send_normal_email
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken, Token
+from django.contrib.auth import get_user_model
+
+# serializers.
+
+User = get_user_model()
+
+
+class SuperuserRegistrationSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        write_only=True, required=True, style={"input_type": "password"}
+    )
+
+    class Meta:
+        model = User
+        fields = ["email", "password", "first_name", "last_name"]
+
+    def create(self, validated_data):
+        user = User.objects.create_superuser(
+            email=validated_data["email"],
+            password=validated_data["password"],
+            first_name=validated_data.get("first_name", ""),
+            last_name=validated_data.get("last_name", ""),
+        )
+        return user
 
 
 class UserSerializers(serializers.ModelSerializer):
@@ -100,8 +125,6 @@ class PasswordResetRequestSerializer(serializers.Serializer):
         return super().validate(attrs)
 
 
-
-
 class PasswordResetSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     password2 = serializers.CharField(max_length=68, min_length=6, write_only=True)
@@ -151,20 +174,20 @@ class SetNewPasswordSerializer(serializers.Serializer):
         except Exception as e:
             return AuthenticationFailed("Link is invalid or expired")
 
+
 class LogoutUserSerializer(serializers.Serializer):
-    refresh_token=serializers.CharField()
-    
-    default_error_message={
-        'bad_token':('Token is invalid or has expired')
-    }
-    
+    refresh_token = serializers.CharField()
+
+    default_error_message = {"bad_token": ("Token is invalid or has expired")}
+
     def validate(self, attrs):
-        self.token=attrs.get('refresh_token')
+        self.token = attrs.get("refresh_token")
         return attrs
+
     def save(self, **kwargs):
         try:
-            token=RefreshToken(self.token)
+            token = RefreshToken(self.token)
             token.blacklist()
-            
+
         except TokenError:
-            return self.fail('bad_token')
+            return self.fail("bad_token")

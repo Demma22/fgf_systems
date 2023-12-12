@@ -14,10 +14,30 @@ from .serializers import (
     LogoutUserSerializer,
     PasswordResetRequestSerializer,
     SetNewPasswordSerializer,
+    SuperuserRegistrationSerializer
 )
-
 from rest_framework.exceptions import AuthenticationFailed
 from .utils import send_code_to_user, send_normal_email
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
+class SuperuserRegistrationView(CreateAPIView):
+    serializer_class = SuperuserRegistrationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+
+        return Response(
+            {"message": "Superuser registered successfully"},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
 
 
 class RegistrationView(GenericAPIView):
@@ -162,11 +182,11 @@ class SetNewPassword(GenericAPIView):
 
 
 class LogoutUserView(GenericAPIView):
-    serializer_class=LogoutUserSerializer
-    permission_classes=[IsAuthenticated]
-    
+    serializer_class = LogoutUserSerializer
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
-        serializer=self.serializer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(status=status.HTTP_204_NO_CONTENT)

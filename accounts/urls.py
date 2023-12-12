@@ -8,10 +8,16 @@ from .views import (
     PasswordResetRequestView,
     PasswordResetConfirm,
     SetNewPassword,
+    SuperuserRegistrationView,
 )
 from urllib.parse import quote
 
 urlpatterns = [
+    path(
+        "api/v1/auth/register/superuser/",
+        SuperuserRegistrationView.as_view(),
+        name="superuser-registration",
+    ),
     path("api/v1/auth/register/", RegistrationView.as_view(), name="register"),
     path("api/v1/auth/verify-email/", VerifyUserEmail.as_view(), name="verify-email"),
     path("api/v1/auth/login/", LoginUserView.as_view(), name="login"),
