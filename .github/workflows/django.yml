@@ -40,10 +40,10 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r ${{ github.workspace }}/requirements.txt
+          pip install -r ${{ github.workspace }}/core/requirements.txt
 
       - name: Run Tests
-        run: python manage.py test
+        run: python ${{ github.workspace }}/manage.py test
 
   deploy:
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
 
       - name: Deploy to Render
         run: |
-          cd ${{ github.workspace }}
+          cd ${{ github.workspace }}/core
           python manage.py migrate
           python manage.py collectstatic --noinput
 
