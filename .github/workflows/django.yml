@@ -68,26 +68,8 @@ jobs:
 
       - name: Deploy to Render
         run: |
-          curl -X POST -H "Content-Type: application/json" -H "Authorization: Bearer ${{ secrets.RENDER_TOKEN }}" -d '{"branch": "main"}' https://api.render.com/v1/deploys
-
-      - name: Wait for Render Deployment
-        run: |
-          RENDER_SERVICE_NAME="fgfbackend"  # Replace with your Render service name
-          RENDER_ENVIRONMENT="production"  # Change to the appropriate environment
-
-          STATUS=""
-          while [ "$STATUS" != "SUCCEEDED" ] && [ "$STATUS" != "FAILED" ]; do
-              STATUS=$(curl -s -H "Authorization: Bearer ${{ secrets.RENDER_TOKEN }}" https://api.render.com/v1/services/$RENDER_SERVICE_NAME/deploys/latest | jq -r .status)
-              echo "Render deployment status: $STATUS"
-              sleep 10
-          done
-
-          if [ "$STATUS" == "SUCCEEDED" ]; then
-              echo "Render deployment successful!"
-          else
-              echo "Render deployment failed!"
-              exit 1
-          fi
+          # No need for an explicit deployment step for Render. Render will automatically deploy on push to your connected GitHub repository.
+          echo "Deployment to Render triggered on GitHub push."
 
       - name: Echo Deployment Status
         run: echo "Deployment to Render Completed"
