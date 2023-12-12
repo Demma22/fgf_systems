@@ -56,11 +56,11 @@ MIDDLEWARE = [
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "https://vercel.app",
+    "https://fgfoundation.onrender.com",
     "http://localhost:5173",
     # Add other origins as needed
 ]
-CORS_ORIGIN_WHITELIST = ["http://localhost:5173"]
+CORS_ORIGIN_WHITELIST = ["http://localhost:5173", "https://fgfoundation.onrender.com"]
 
 # Template Settings
 TEMPLATES = [
