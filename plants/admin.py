@@ -6,3 +6,4 @@ admin.site.register(PlantName)
 admin.site.register(MedicinalPlant)
 admin.site.register(MedicinalPlantName)
 admin.site.register(Language)
+
