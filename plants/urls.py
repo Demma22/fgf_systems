@@ -10,22 +10,22 @@ from .views import (
 
 urlpatterns = [
     path(
-        "api/total-plant-entries/",
+        "total-plant-entries/",
         CountPlantEntriesAPIView.as_view(),
         name="total-plant-count",
     ),
     path(
-        "api/total-medicinal-plant-entries/",
+        "total-medicinal-plant-entries/",
         CountMedicinalPlantEntriesAPIView.as_view(),
         name="total-medicinal-plant-entries",
     ),
     path(
-        "api/plants/",
+        "plants/",
         PlantViewSet.as_view({"get": "list", "post": "create"}),
         name="plant_list_create",
     ),
     path(
-        "api/plants/<int:pk>/",
+        "plants/<int:pk>/",
         PlantViewSet.as_view(
             {
                 "get": "retrieve",
@@ -37,12 +37,12 @@ urlpatterns = [
         name="plant_detail",
     ),
     path(
-        "api/plantnames/",
+        "plantnames/",
         PlantNameViewSet.as_view({"get": "list", "post": "create"}),
         name="plant_name_list_create",
     ),
     path(
-        "api/plantnames/<int:pk>/",
+        "plantnames/<int:pk>/",
         PlantNameViewSet.as_view(
             {
                 "get": "retrieve",
@@ -54,12 +54,12 @@ urlpatterns = [
         name="plant_name_detail",
     ),
     path(
-        "api/medicinalplants/",
+        "medicinalplants/",
         MedicinalPlantViewSet.as_view({"get": "list", "post": "create"}),
         name="medicinal_plant_list_create",
     ),
     path(
-        "api/medicinalplants/<int:pk>/",
+        "medicinalplants/<int:pk>/",
         MedicinalPlantViewSet.as_view(
             {
                 "get": "retrieve",
@@ -71,12 +71,12 @@ urlpatterns = [
         name="medicinal_plant_detail",
     ),
     path(
-        "api/medicinalplantnames/",
+        "medicinalplantnames/",
         MedicinalPlantNameViewSet.as_view({"get": "list", "post": "create"}),
         name="medicinal_plant_name_list_create",
     ),
     path(
-        "api/medicinalplantnames/<int:pk>/",
+        "medicinalplantnames/<int:pk>/",
         MedicinalPlantNameViewSet.as_view(
             {
                 "get": "retrieve",
@@ -89,32 +89,32 @@ urlpatterns = [
     ),
     # Additional paths for review, approve, and reject actions
     path(
-        "api/plants/<int:pk>/review-edit/",
+        "plants/<int:pk>/review-edit/",
         PlantViewSet.as_view({"patch": "review_edit_data"}),
         name="plant-review-edit",
     ),
     path(
-        "api/plants/<int:pk>/approve/",
+        "plants/<int:pk>/approve/",
         PlantViewSet.as_view({"patch": "approve_data"}),
         name="plant-approve",
     ),
     path(
-        "api/plants/<int:pk>/reject/",
+        "plants/<int:pk>/reject/",
         PlantViewSet.as_view({"delete": "reject_data"}),
         name="plant-reject",
     ),
     path(
-        "api/medicinalplants/<int:pk>/review-edit/",
+        "medicinalplants/<int:pk>/review-edit/",
         MedicinalPlantViewSet.as_view({"patch": "review_edit_data"}),
         name="medicinal-plant-review-edit",
     ),
     path(
-        "api/medicinalplants/<int:pk>/approve/",
+        "medicinalplants/<int:pk>/approve/",
         MedicinalPlantViewSet.as_view({"patch": "approve_data"}),
         name="medicinal-plant-approve",
     ),
     path(
-        "api/medicinalplants/<int:pk>/reject/",
+        "medicinalplants/<int:pk>/reject/",
         MedicinalPlantViewSet.as_view({"delete": "reject_data"}),
         name="medicinal-plant-reject",
     ),

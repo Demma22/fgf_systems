@@ -57,18 +57,13 @@ MIDDLEWARE = [
 
 # CORS Settings
 CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "https://fgfoundation.onrender.com",
-    "http://localhost:5173",
-    # Add other origins as needed
-]
 CORS_ORIGIN_WHITELIST = ["http://localhost:5173", "https://fgfoundation.onrender.com"]
 
 # Template Settings
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [os.path.join(BASE_DIR, "accounts/templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -93,6 +88,7 @@ USE_TZ = True
 # Static and Media Settings
 STATIC_URL = "/static/"
 MEDIA_URL = "/images/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -119,7 +115,6 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 
-
 # Rest Framework Settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -130,7 +125,7 @@ REST_FRAMEWORK = {
     # other settings...
 }
 
-
+# JWT Configuration
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -164,8 +159,11 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
 
-
+# Google OAuth Settings
 GOOGLE_CLIENT_ID = (
     "855355668583-qvd0kp0n9d7abr4p1jo3l6jdgh6ej4qc.apps.googleusercontent.com"
 )
 GOOGLE_CLIENT_SECRET = "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"
+
+# Additional Settings
+CRISPY_TEMPLATE_PACK = "bootstrap4"
