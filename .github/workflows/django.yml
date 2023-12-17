@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build
 
 on:
   push:
@@ -22,25 +22,42 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v2
         with:
           python-version: '3.10'
 
       - name: Set DATABASE_URL for Django Tests
-        run: echo "DATABASE_URL=${DATABASE_URL}" >> "$GITHUB_ENV_PATH"
+        run: echo "DATABASE_URL=${DATABASE_URL}" >> $GITHUB_ENV
 
       - name: Set Email Environment Variables
         run: |
-          echo "EMAIL_HOST_USER=${EMAIL_HOST_USER}" >> "$GITHUB_ENV_PATH"
-          echo "EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}" >> "$GITHUB_ENV_PATH"
+          echo "EMAIL_HOST_USER=${EMAIL_HOST_USER}" >> $GITHUB_ENV
+          echo "EMAIL_HOST_PASSWORD=${EMAIL_HOST_PASSWORD}" >> $GITHUB_ENV
 
       - name: Set DJANGO_SECRET_KEY for Django Tests
-        run: echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" >> "$GITHUB_ENV_PATH"
+        run: echo "DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}" >> $GITHUB_ENV
 
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r ${{ github.workspace }}/requirements.txt
 
+      - name: Apply Database Migrations
+        run: python manage.py migrate
+
+      - name: Collect Static Files
+        run: python manage.py collectstatic --noinput
+
       - name: Run Tests
         run: python manage.py test
+
+  deploy_to_render:
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Render
+        run: |
+          curl -X POST "https://api.render.com/v1/deploys" \
+          -H "Authorization: Bearer $RENDER_TOKEN" \
+          -H "Content-Type: application/json" \
+          --data '{"branch": "main"}'
