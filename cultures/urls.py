@@ -24,9 +24,9 @@ urlpatterns = [
         CulturalKingdomListView.as_view(),
         name="total-cultural-kingdom-entries",
     ),
-    path("api/v1/ethnicity/", EthnicityListView.as_view(), name="ethnicity-list"),
+    path("api/v1/cultures/", EthnicityListView.as_view(), name="ethnicity-list"),
     path(
-        "api/v1/total-entries-ethnicity/",
+        "api/v1/total-entries-cultures/",
         EthnicityListView.as_view(),
         name="total-ethnicity-entries",
     ),
