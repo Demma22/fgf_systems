@@ -33,10 +33,10 @@ urlpatterns = [
     path(
         "api/docs/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"
     ),
-    path("api/v1/animals/", include("animals.urls")),
-    path("api/v1/cultures/", include("cultures.urls")),
-    path("api/v1/plants/", include("plants.urls")),
-    path("api/auth/v1/", include("accounts.urls")),
+    path("", include("animals.urls")),
+    path("", include("cultures.urls")),
+    path("", include("plants.urls")),
+    path("", include("accounts.urls")),
 ]
 
 # Add the following lines for serving media files during development

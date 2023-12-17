@@ -2,12 +2,29 @@ from rest_framework import viewsets, generics, filters, permissions
 from rest_framework.response import Response
 from .models import Plant, PlantName, MedicinalPlant, MedicinalPlantName
 from .serializers import (
+    CountEntriesSerializer,
     PlantSerializer,
     PlantNameSerializer,
     MedicinalPlantSerializer,
     MedicinalPlantNameSerializer,
 )
 from rest_framework.decorators import action
+
+
+class CountPlantEntriesAPIView(generics.GenericAPIView):
+    serializer_class = CountEntriesSerializer  # Add this line
+
+    def get(self, request, *args, **kwargs):
+        plant_count = Plant.objects.count()
+        medicinal_plant_count = MedicinalPlant.objects.count()
+
+        # Use the serializer to structure the response
+        serializer = self.get_serializer(
+            {
+                "plant_entries_count": plant_count,
+                "medicinal_plant_entries_count": medicinal_plant_count,
+            }
+        )
 
 
 class CountPlantEntriesAPIView(generics.GenericAPIView):

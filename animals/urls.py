@@ -17,55 +17,55 @@ from .views import (
 
 urlpatterns = [
     path(
-        "total-animal-count/",
+        "api/v1/total-animal-count/",
         TotalAnimalCountAPIView.as_view(),
         name="total-animal-count",
     ),
     path(
-        "total-classification-count/",
+        "api/v1/total-classification-count/",
         TotalClassificationCountAPIView.as_view(),
         name="total-classification-count",
     ),
     path(
-        "total-species-count/",
+        "api/v1/total-species-count/",
         TotalSpeciesCountAPIView.as_view(),
         name="total-species-count",
     ),
-    path("animals/", AnimalListCreateView.as_view(), name="animal-list-create"),
-    path("animals/<int:pk>/", AnimalDetailView.as_view(), name="animal-detail"),
+    path("api/v1/animals/", AnimalListCreateView.as_view(), name="animal-list-create"),
+    path("api/v1/animals/<int:pk>/", AnimalDetailView.as_view(), name="animal-detail"),
     path(
-        "classifications/",
+        "api/v1/classifications/",
         AnimalClassificationListCreateView.as_view(),
         name="classification-list-create",
     ),
     path(
-        "classifications/<int:pk>/",
+        "api/v1/classifications/<int:pk>/",
         AnimalClassificationDetailView.as_view(),
         name="classification-detail",
     ),
     path(
-        "local-names/",
+        "api/v1/local-names/",
         AnimalLocalNameListCreateView.as_view(),
         name="local-name-list-create",
     ),
     path(
-        "local-names/<int:pk>/",
+        "api/v1/local-names/<int:pk>/",
         AnimalLocalNameDetailView.as_view(),
         name="local-name-detail",
     ),
-    path("submit-animal-data/", submit_animal_data, name="submit-animal-data"),
+    path("api/v1/submit-animal-data/", submit_animal_data, name="submit-animal-data"),
     path(
-        "review-edit-animal-data/<int:animal_id>/",
+        "api/v1/review-edit-animal-data/<int:animal_id>/",
         review_edit_animal_data,
         name="review-edit-animal-data",
     ),
     path(
-        "approve-animal-data/<int:animal_id>/",
+        "api/v1/approve-animal-data/<int:animal_id>/",
         approve_animal_data,
         name="approve-animal-data",
     ),
     path(
-        "reject-animal-data/<int:animal_id>/",
+        "api/v1/reject-animal-data/<int:animal_id>/",
         reject_animal_data,
         name="reject-animal-data",
     ),

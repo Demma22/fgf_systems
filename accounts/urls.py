@@ -12,19 +12,27 @@ from .views import (
 
 urlpatterns = [
     path(
-        "register/contributor/",
+        "api/v1/auth/register/contributor/",
         ContributorRegistrationView.as_view(),
         name="contributor-register",
     ),
-    path("register/admin/", AdminRegistrationView.as_view(), name="admin-register"),
     path(
-        "login/contributor/", ContributorLoginView.as_view(), name="contributor-login"
+        "api/v1/auth/register/admin/", AdminRegistrationView.as_view(), name="admin-register"
     ),
-    path("login/admin/", AdminLoginView.as_view(), name="admin-login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("password-reset/", PasswordResetRequestView.as_view(), name="password-reset"),
     path(
-        "password-reset/confirm/",
+        "api/v1/auth/login/contributor/",
+        ContributorLoginView.as_view(),
+        name="contributor-login",
+    ),
+    path("api/v1/auth/login/admin/", AdminLoginView.as_view(), name="admin-login"),
+    path("api/v1/logout/", LogoutView.as_view(), name="logout"),
+    path(
+        "api/v1/password-reset/",
+        PasswordResetRequestView.as_view(),
+        name="password-reset",
+    ),
+    path(
+        "api/v1/auth/password-reset/confirm/",
         SetNewPasswordView.as_view(),
         name="password-reset-confirm",
     ),

@@ -2,6 +2,11 @@ from rest_framework import serializers
 from .models import Plant, PlantName, MedicinalPlant, MedicinalPlantName
 
 
+class CountEntriesSerializer(serializers.Serializer):
+    plant_entries_count = serializers.IntegerField()
+    medicinal_plant_entries_count = serializers.IntegerField()
+
+
 class PlantNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlantName

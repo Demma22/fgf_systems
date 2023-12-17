@@ -2,5 +2,5 @@ from django.urls import path
 from .views import GoogleSignInView
 
 urlpatterns = [
-    path("google/", GoogleSignInView.as_view(), name="google"),
+    path("api/v1/google/", GoogleSignInView.as_view(), name="google"),
 ]
